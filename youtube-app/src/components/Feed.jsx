@@ -7,16 +7,15 @@ import { fetchFromAPI } from "../utils/fetchFromAPI";
 
 const Feed = () => {
   const [selectedCategory, setSelectedCategory] = useState("New");
-  const [videos, setVideos] = useState(null);
-
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    setVideos(null);
-
-    fetchFromAPI(`search?part=snippet&q=${selectedCategory}`)
-    
-    .then((data) => setVideos(data.items))
+  
+    fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then((data) =>
+      setVideos(data.items)
+    );
   }, [selectedCategory]);
+
   return (
     <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>
       <Box
@@ -26,10 +25,9 @@ const Feed = () => {
           px: { sx: 0, md: 2 },
         }}
       >
-        <Sidebar 
-        selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
-
-
+        <Sidebar
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
         />
         <Typography
           className="copyright"
@@ -42,11 +40,11 @@ const Feed = () => {
       <Box p={2} sx={{ overflow: "auto", height: "90vh", flex: 2 }}>
         <Typography
           variant="h4"
-          fontweight="bold"
+          fontWeight="bold"
           mb={2}
           sx={{ color: "white" }}
         >
-          New <span style={{ color: "#f31503" }}>videos</span>
+          {selectedCategory} <span style={{ color: "#f31503" }}>videos</span>
         </Typography>
         <Videos videos={videos} />
       </Box>
